@@ -1,4 +1,3 @@
-import javax.swing.*;
 import java.nio.charset.Charset;
 import java.security.SecureRandom;
 import java.util.ArrayList;
