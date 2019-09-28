@@ -3,8 +3,6 @@ import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
-//TODO реализовать циклический сдвиг. Возможно из-за этого не работает
 public class Feistel {
 
     public static int rounds = 18;
@@ -17,7 +15,6 @@ public class Feistel {
         byte result = (byte)(input << n | input >>> (numBitsInByte - n));
         return result;
     }
-
 
     public static byte circularRightShift(byte input, int n) {
         int numBitsInByte = 8;
@@ -33,6 +30,7 @@ public class Feistel {
         String source = sc.nextLine();
         ArrayList<Byte> cypher = encrypt(source);
         System.out.println("Encrypted msg as hex:\n" + cypherToHex(cypher));
+        System.out.println("Encrypted msg as bin:\n" + cypherToBinary(cypher));
 
     }
 
@@ -41,9 +39,9 @@ public class Feistel {
         byte[] buf = new byte[left.length];
 
         for (int i = 0; i < rounds - 1; i++) {
-            key[i] = rnd.nextInt(32);
+            key[i] = rnd.nextInt() & Integer.MAX_VALUE;
             for (int j = 0; j < left.length; j++) {
-                left[j] = circularLeftShift(left[j] ,key[i]);
+                left[j] = circularLeftShift(left[j], key[i]);
                 buf[j] = left[j];
             }
             for (int j = 0; j < left.length; j++) {
@@ -55,7 +53,7 @@ public class Feistel {
         }
 
         //last iter is an exception
-        key[rounds - 1] = rnd.nextInt(32);
+        key[rounds - 1] = rnd.nextInt() & Integer.MAX_VALUE;
         for (int j = 0; j < left.length; j++) {
             left[j] = circularLeftShift(left[j], key[rounds - 1]);
         }
@@ -125,6 +123,15 @@ public class Feistel {
         StringBuilder sb = new StringBuilder();
         for(Byte c : cypher){
             sb.append(String.format("%02x ", c));
+        }
+        return sb.toString();
+    }
+
+    public static String cypherToBinary(ArrayList<Byte> cypher){
+        StringBuilder sb = new StringBuilder();
+        for(Byte c : cypher){
+            sb.append(String.format("%8s", Integer.toBinaryString(c & 0xFF)).replace(' ', '0'));
+            sb.append(" ");
         }
         return sb.toString();
     }
