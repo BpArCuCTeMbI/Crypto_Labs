@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class Feistel2 {
-    public static int rounds = 5;
+    public static int rounds = 3;
 
     public static void main(String[] args) {
         System.out.println("Enter message to encrypt:");
@@ -20,6 +20,10 @@ public class Feistel2 {
         System.out.println("Decrypted as hex: " + arrToHex(decrypted));
     }
 
+    /*
+    * encryption and decryption works good,
+    * problem is in the logic itself.
+    * */
     public static FeistData encrypt(String source) {
         /*
         better calibrate amount of the rounds and size of each key element. If they are too big, we get long type overflow.
