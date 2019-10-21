@@ -67,17 +67,17 @@ public class Feistel2 {
         now we have left and right arrays
          */
         SecureRandom sr = new SecureRandom();
-        key = new Integer[left.length];
+        key = new Integer[rounds];
         Long[] buf = new Long[left.length];
-        for(int i = 0 ; i < left.length; i++){
+        for(int i = 0 ; i < key.length; i++){
             key[i] = sr.nextInt(9) + 1;
         }
-        for(int i = 0; i < rounds; i++){
+        for(int i = 0; i < rounds - 1; i++){
             for(j = 0; j < left.length; j++){
                 buf[j] = left[j];
             }
             for(j = 0; j < left.length; j++) {
-                left[j] = modifiedLeftShift(left[j], key[j]);
+                left[j] = modifiedLeftShift(left[j], key[i]);
             }
             for (j = 0; j < left.length; j++) {
                 left[j] = (left[j] ^ right[j]);
@@ -85,6 +85,19 @@ public class Feistel2 {
             for (j = 0; j < right.length; j++) {
                 right[j] = buf[j];
             }
+        }
+
+        for(j = 0; j < left.length; j++){
+            buf[j] = left[j];
+        }
+        for(j = 0; j < left.length; j++) {
+            left[j] = modifiedLeftShift(left[j], key[rounds - 1]);
+        }
+        for (j = 0; j < left.length; j++) {
+            left[j] = (left[j] ^ right[j]);
+        }
+        for (j = 0; j < right.length; j++) {
+            right[j] = buf[j];
         }
 
         for(int i = 0; i < left.length; i++){
@@ -124,12 +137,12 @@ public class Feistel2 {
         Collections.reverse(keyList);
         Long[] buf = new Long[left.length];
 
-        for(int i = 0; i < rounds; i++){
+        for(int i = 0; i < rounds - 1; i++){
             for(j = 0; j < left.length; j++){
                 buf[j] = left[j];
             }
             for(j = 0; j < left.length; j++) {
-                left[j] = modifiedRightShift(left[j], keyList.get(j));
+                left[j] = modifiedRightShift(left[j], keyList.get(i));
             }
             for (j = 0; j < left.length; j++) {
                 left[j] = (left[j] ^ right[j]);
@@ -137,6 +150,19 @@ public class Feistel2 {
             for (j = 0; j < right.length; j++) {
                 right[j] = buf[j];
             }
+        }
+
+        for(j = 0; j < left.length; j++){
+            buf[j] = left[j];
+        }
+        for(j = 0; j < left.length; j++) {
+            left[j] = modifiedRightShift(left[j], keyList.get(rounds - 1));
+        }
+        for (j = 0; j < left.length; j++) {
+            left[j] = (left[j] ^ right[j]);
+        }
+        for (j = 0; j < right.length; j++) {
+            right[j] = buf[j];
         }
 
         for(int i = 0; i < left.length; i++){
