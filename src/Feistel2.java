@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class Feistel2 {
-    public static int rounds = 3;
+    public static int rounds = 18;
 
     public static void main(String[] args) {
         System.out.println("Enter message to encrypt:");
@@ -76,8 +76,13 @@ public class Feistel2 {
             for(j = 0; j < left.length; j++){
                 buf[j] = left[j];
             }
+            /*
             for(j = 0; j < left.length; j++) {
                 left[j] = modifiedLeftShift(left[j], key[i]);
+            }
+             */
+            for(j = 0; j < left.length; j++) {
+                left[j] = left[j] ^ key[i];
             }
             for (j = 0; j < left.length; j++) {
                 left[j] = (left[j] ^ right[j]);
@@ -90,8 +95,13 @@ public class Feistel2 {
         for(j = 0; j < left.length; j++){
             buf[j] = left[j];
         }
+        /*
         for(j = 0; j < left.length; j++) {
             left[j] = modifiedLeftShift(left[j], key[rounds - 1]);
+        }
+        */
+        for(j = 0; j < left.length; j++) {
+            left[j] = left[j] ^ key[rounds - 1];
         }
         for (j = 0; j < left.length; j++) {
             left[j] = (left[j] ^ right[j]);
@@ -141,8 +151,13 @@ public class Feistel2 {
             for(j = 0; j < left.length; j++){
                 buf[j] = left[j];
             }
+            /*
             for(j = 0; j < left.length; j++) {
                 left[j] = modifiedRightShift(left[j], keyList.get(i));
+            }
+            */
+            for(j = 0; j < left.length; j++) {
+                left[j] = left[j] ^ key[i];
             }
             for (j = 0; j < left.length; j++) {
                 left[j] = (left[j] ^ right[j]);
@@ -155,8 +170,14 @@ public class Feistel2 {
         for(j = 0; j < left.length; j++){
             buf[j] = left[j];
         }
+        /*
         for(j = 0; j < left.length; j++) {
             left[j] = modifiedRightShift(left[j], keyList.get(rounds - 1));
+        }
+
+         */
+        for(j = 0; j < left.length; j++) {
+            left[j] = left[j] ^ key[rounds - 1];
         }
         for (j = 0; j < left.length; j++) {
             left[j] = (left[j] ^ right[j]);
